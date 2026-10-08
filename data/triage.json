@@ -1,0 +1,131 @@
+{
+  "_note": "شجرة التقييم السريع. كل عقدة إما سؤال (type=q) له yes و no تشيران لعقدة أخرى، أو نتيجة: condition (تفتح صفحة حالة، urgent=true يضيف تنبيه اتصال)، أو danger (شاشة خطر حمراء)، أو none.",
+  "start": "respond",
+  "nodes": {
+    "respond": {
+      "type": "q",
+      "q": "هل يستجيب إذا ناديته بصوت عالٍ ولمست كتفه؟",
+      "yes": "hardBreath",
+      "no": "breathing"
+    },
+    "breathing": {
+      "type": "q",
+      "q": "هل يتنفس بشكل طبيعي؟",
+      "hint": "انظر إلى صدره 10 ثوانٍ. الشهقات المتقطعة ليست تنفساً طبيعياً.",
+      "yes": "unconsciousShaking",
+      "no": "dangerCpr"
+    },
+    "dangerCpr": {
+      "type": "danger",
+      "title": "لا يستجيب ولا يتنفس",
+      "text": "اتصل بالإسعاف 997 الآن، ثم ابدأ ضغطات الصدر فوراً.",
+      "next": "cpr"
+    },
+    "unconsciousShaking": {
+      "type": "q",
+      "q": "هل يرتجف أو ينتفض جسمه الآن؟",
+      "yes": "rSeizure",
+      "no": "rUnconscious"
+    },
+    "rSeizure": { "type": "condition", "id": "seizure", "urgent": true },
+    "rUnconscious": {
+      "type": "condition",
+      "id": "faint",
+      "urgent": true,
+      "note": "فاقد الوعي ويتنفس: اتصل بالإسعاف 997، وضعه على جنبه، وراقب تنفسه باستمرار. إذا توقف تنفسه ابدأ ضغطات الصدر."
+    },
+    "hardBreath": {
+      "type": "q",
+      "q": "هل يجد صعوبة شديدة في التنفس، أو لا يستطيع الكلام أو الكحة؟",
+      "yes": "suddenEating",
+      "no": "chestStroke"
+    },
+    "suddenEating": {
+      "type": "q",
+      "q": "هل بدأ ذلك فجأة أثناء الأكل أو وضع شيء في فمه؟",
+      "yes": "rChoking",
+      "no": "swelling"
+    },
+    "rChoking": { "type": "condition", "id": "choking", "urgent": true },
+    "swelling": {
+      "type": "q",
+      "q": "هل يوجد تورم في الوجه أو الشفاه أو اللسان، أو طفح، بعد أكل أو لسعة أو دواء؟",
+      "yes": "rAnaphylaxis",
+      "no": "rAsthma"
+    },
+    "rAnaphylaxis": { "type": "condition", "id": "anaphylaxis", "urgent": true },
+    "rAsthma": { "type": "condition", "id": "asthma" },
+    "chestStroke": {
+      "type": "q",
+      "q": "هل يشتكي من ألم شديد في الصدر، أو ضعف أو تنميل مفاجئ في جهة من الجسم، أو ميلان في الوجه؟",
+      "yes": "dangerChest",
+      "no": "bleed"
+    },
+    "dangerChest": {
+      "type": "danger",
+      "title": "علامة خطر",
+      "text": "اتصل بالإسعاف 997 الآن. أجلسه أو أرقده بالوضع المريح له، ولا تعطه أكلاً أو شرباً، وابقَ معه. إذا فقد وعيه وتوقف تنفسه ابدأ ضغطات الصدر.",
+      "next": "cpr"
+    },
+    "bleed": {
+      "type": "q",
+      "q": "هل ينزف من جرح؟",
+      "yes": "rBleeding",
+      "no": "nose"
+    },
+    "rBleeding": { "type": "condition", "id": "bleeding" },
+    "nose": {
+      "type": "q",
+      "q": "هل ينزف من أنفه؟",
+      "yes": "rNosebleed",
+      "no": "burn"
+    },
+    "rNosebleed": { "type": "condition", "id": "nosebleed" },
+    "burn": {
+      "type": "q",
+      "q": "هل عنده حرق؟",
+      "yes": "rBurns",
+      "no": "heat"
+    },
+    "rBurns": { "type": "condition", "id": "burns" },
+    "heat": {
+      "type": "q",
+      "q": "هل كان في الشمس أو الحر، وجسمه حار جداً أو يبدو مشوشاً؟",
+      "yes": "rHeat",
+      "no": "sugar"
+    },
+    "rHeat": { "type": "condition", "id": "heatstroke" },
+    "sugar": {
+      "type": "q",
+      "q": "هل عنده سكري، أو يرتجف ويتعرق ويشعر بجوع أو تشوش؟",
+      "yes": "rHypo",
+      "no": "fainted"
+    },
+    "rHypo": { "type": "condition", "id": "hypo" },
+    "fainted": {
+      "type": "q",
+      "q": "هل سقط أو فقد وعيه لوقت قصير ثم صحا؟",
+      "yes": "rFaint",
+      "no": "bone"
+    },
+    "rFaint": { "type": "condition", "id": "faint" },
+    "bone": {
+      "type": "q",
+      "q": "هل أصيب بسقطة أو ضربة، ويؤلمه عظم أو مفصل ولا يستطيع تحريكه؟",
+      "yes": "rFracture",
+      "no": "pressure"
+    },
+    "rFracture": { "type": "condition", "id": "fracture" },
+    "pressure": {
+      "type": "q",
+      "q": "هل عنده صداع شديد أو دوخة، ومعروف أن ضغطه مرتفع؟",
+      "yes": "rBp",
+      "no": "none"
+    },
+    "rBp": { "type": "condition", "id": "bp" },
+    "none": {
+      "type": "none",
+      "text": "لم نجد حالة مطابقة. ابحث بكلماتك أو اختر من قائمة الحالات. إذا شككت أن الوضع خطير فاتصل بالإسعاف 997."
+    }
+  }
+}

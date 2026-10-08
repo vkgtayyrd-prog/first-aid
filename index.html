@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>إسعافي</title>
+  <meta name="description" content="خطوات الإسعافات الأولية لطلاب المدرسة، تعمل بدون إنترنت.">
+  <meta name="theme-color" content="#c62828">
+  <meta name="color-scheme" content="light dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="إسعافي">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="call-btn" href="tel:997" aria-label="اتصال بالإسعاف 997">
+      <span aria-hidden="true">📞</span> اتصال بالإسعاف 997
+    </a>
+    <nav class="nav" aria-label="التنقل">
+      <button type="button" class="nav-btn" id="backBtn" aria-label="رجوع">→ رجوع</button>
+      <a class="nav-btn" href="#/" aria-label="الرئيسية">🏠 الرئيسية</a>
+    </nav>
+  </header>
+
+  <main id="app" tabindex="-1">
+    <p class="loading">جارٍ التحميل…</p>
+  </main>
+
+  <footer class="disclaimer" role="note">
+    إرشادات أولية ولا تغني عن الإسعاف أو الطبيب
+  </footer>
+
+  <noscript><p class="loading">يحتاج التطبيق إلى تفعيل JavaScript.</p></noscript>
+
+  <script src="vendor/qrcode.js"></script>
+  <script src="vendor/jsQR.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
