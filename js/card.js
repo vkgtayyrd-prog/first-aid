@@ -1,5 +1,6 @@
 // البطاقة الصحية: التخزين المحلي، رمز PIN، الترميز للباركود، والشاشات.
 import { esc, $, $$, store, formatDateTime, copyText } from './util.js';
+import { icon, pageHead } from './icons.js';
 
 const KEY_CARD = 'fa.card';
 const KEY_PIN = 'fa.pin';
@@ -209,7 +210,7 @@ export function bigCardHtml(card, { example = false } = {}) {
 
 function onboardingView(el, nav, next) {
   el.innerHTML = `
-    <h1>🪪 بطاقتي الصحية</h1>
+    ${pageHead('id-card', 'green', 'بطاقتي الصحية')}
     <div class="notice">
       <p><strong>بياناتك في جوالك فقط.</strong> لا تُرسل إلى أي مكان، ولا يوجد حساب ولا سيرفر.</p>
       <p>اكتب الحد الأدنى فقط: ما يحتاجه من يسعفك. لا تكتب تاريخك المرضي بالتفصيل.</p>
@@ -229,7 +230,7 @@ function onboardingView(el, nav, next) {
 
 function pinView(el, onDone) {
   el.innerHTML = `
-    <h1>🔒 البطاقة مقفلة</h1>
+    ${pageHead('lock', 'slate', 'البطاقة مقفلة')}
     <form id="f" class="stack" autocomplete="off">
       <div class="field">
         <label for="pin">أدخل رمز PIN</label>
@@ -264,27 +265,27 @@ export function cardHomeView(el, nav) {
     const card = getCard();
     if (!card) {
       el.innerHTML = `
-        <h1>🪪 بطاقتي الصحية</h1>
+        ${pageHead('id-card', 'green', 'بطاقتي الصحية')}
         <p>لا توجد بطاقة بعد. البطاقة تساعد من يسعفك أن يعرف حالتك ومكان دوائك ورقم ولي أمرك.</p>
         <div class="stack">
           <a class="btn btn-primary" href="#/card/edit">إنشاء بطاقتي</a>
           <a class="btn" href="#/card/example">عرض بطاقة مثال</a>
           <a class="btn" href="#/card/backup">استيراد نسخة احتياطية</a>
-          <a class="btn" href="#/scan">📷 قراءة باركود</a>
+          <a class="btn" href="#/scan">${icon('camera')} قراءة باركود</a>
         </div>`;
       return;
     }
     el.innerHTML = `
-      <h1>🪪 بطاقتي الصحية</h1>
+      ${pageHead('id-card', 'green', 'بطاقتي الصحية')}
       <p class="muted small">آخر تعديل: ${esc(formatDateTime(store.get(KEY_CARD)?.u || Date.now()))}</p>
       <div class="stack">
-        <a class="btn btn-danger" href="#/card/view" style="min-height:72px;font-size:22px">عرض البطاقة للطوارئ</a>
-        <a class="btn btn-primary" href="#/qr">🔳 إنشاء باركود للإسعاف</a>
-        <a class="btn" href="#/scan">📷 قراءة باركود</a>
-        <a class="btn" href="#/card/edit">✏️ تعديل البطاقة</a>
-        <a class="btn" href="#/card/backup">💾 نسخة احتياطية واستيراد</a>
-        <a class="btn" href="#/card/pin">🔒 ${hasPin() ? 'تغيير أو إزالة رمز PIN' : 'إضافة رمز PIN'}</a>
-        <a class="btn" href="#/settings">⚙️ الإعدادات وحذف البيانات</a>
+        <a class="btn btn-danger" href="#/card/view" style="min-height:68px;font-size:21px">${icon('id-card')} عرض البطاقة للطوارئ</a>
+        <a class="btn btn-primary" href="#/qr">${icon('qr-code')} إنشاء باركود للإسعاف</a>
+        <a class="btn" href="#/scan">${icon('camera')} قراءة باركود</a>
+        <a class="btn" href="#/card/edit">${icon('pencil')} تعديل البطاقة</a>
+        <a class="btn" href="#/card/backup">${icon('save')} نسخة احتياطية واستيراد</a>
+        <a class="btn" href="#/card/pin">${icon('lock')} ${hasPin() ? 'تغيير أو إزالة رمز PIN' : 'إضافة رمز PIN'}</a>
+        <a class="btn" href="#/settings">${icon('settings')} الإعدادات وحذف البيانات</a>
       </div>`;
   });
 }
@@ -308,7 +309,7 @@ export function cardEditView(el, nav) {
   return guard(el, nav, () => {
     const card = getCard() || { n: '', c: '', d: '', a: '', m: '', p: '' };
     el.innerHTML = `
-      <h1>✏️ ${getCard() ? 'تعديل' : 'إنشاء'} البطاقة</h1>
+      ${pageHead('pencil', 'green', `${getCard() ? 'تعديل' : 'إنشاء'} البطاقة`)}
       <p class="notice small">اكتب الحد الأدنى فقط. البيانات تبقى في جوالك.</p>
       <form id="f" autocomplete="off">
         <div class="field">
@@ -374,11 +375,11 @@ export function cardEditView(el, nav) {
 export function cardPinView(el, nav) {
   return guard(el, nav, () => {
     if (!cryptoReady()) {
-      el.innerHTML = `<h1>🔒 رمز PIN</h1><p class="notice err">رمز PIN يحتاج أن يُفتح التطبيق عبر رابط آمن (https).</p>`;
+      el.innerHTML = `${pageHead('lock', 'slate', 'رمز PIN')}<p class="notice err">رمز PIN يحتاج أن يُفتح التطبيق عبر رابط آمن (https).</p>`;
       return;
     }
     el.innerHTML = `
-      <h1>🔒 رمز PIN</h1>
+      ${pageHead('lock', 'slate', 'رمز PIN')}
       <p>الرمز يمنع فتح البطاقة من جوالك بدون إذنك. يُحفظ مشفّراً بدالة تجزئة ولا يمكن استرجاعه إذا نسيته.</p>
       <p class="notice warn small">انتبه: إذا وضعت رمزاً فلن يستطيع من يسعفك فتح البطاقة من جوالك. استخدم باركود الإسعاف أو أخبر الممرض/ة بالرمز.</p>
       <form id="f" autocomplete="off">
@@ -413,21 +414,21 @@ export function cardBackupView(el, nav) {
   return guard(el, nav, () => {
     const card = getCard();
     el.innerHTML = `
-      <h1>💾 نسخة احتياطية</h1>
+      ${pageHead('save', 'slate', 'نسخة احتياطية')}
       ${card ? `
         <p>احفظ نسخة من بطاقتك لتسترجعها إذا غيّرت جوالك أو حذفت التطبيق. النسخة تحتوي بياناتك، فاحفظها في مكان آمن.</p>
         <div class="stack">
-          <button class="btn btn-primary" id="exp">تنزيل ملف النسخة</button>
-          <button class="btn" id="showQr">عرض باركود النسخة</button>
+          <button class="btn btn-primary" id="exp">${icon('file-down')} تنزيل ملف النسخة</button>
+          <button class="btn" id="showQr">${icon('qr-code')} عرض باركود النسخة</button>
         </div>
         <div id="qrOut"></div>
         <hr>` : ''}
       <h2>استيراد</h2>
       <p class="muted small">الاستيراد يستبدل البطاقة الحالية.</p>
       <div class="stack">
-        <button class="btn" id="pick" type="button">📄 اختيار ملف نسخة</button>
+        <button class="btn" id="pick" type="button">${icon('file-up')} اختيار ملف نسخة</button>
         <input id="file" type="file" accept=".json,application/json,text/plain" hidden>
-        <a class="btn" href="#/scan">📷 قراءة باركود النسخة</a>
+        <a class="btn" href="#/scan">${icon('camera')} قراءة باركود النسخة</a>
       </div>
       <div class="field" style="margin-top:12px">
         <label for="code">أو الصق نص النسخة</label>
@@ -485,7 +486,7 @@ export function cardBackupView(el, nav) {
         <button class="btn" id="cp">نسخ النص</button>`;
       $('#cp', el).onclick = async (ev) => {
         const ok = await copyText(code, $('#qrOut textarea', el));
-        ev.target.textContent = ok ? 'تم النسخ ✓' : 'انسخ النص يدوياً';
+        ev.target.textContent = ok ? 'تم النسخ' : 'انسخ النص يدوياً';
       };
     };
   });

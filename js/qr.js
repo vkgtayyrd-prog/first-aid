@@ -3,6 +3,7 @@ import { esc, $, store, formatTime, formatCountdown, copyText } from './util.js'
 import {
   guard, getCard, encodeCard, decodeCard, bigCardHtml, qrSvg, confirmImport, isLocked, KEY_TEMP,
 } from './card.js';
+import { icon, pageHead } from './icons.js';
 
 const TTL = 2 * 60 * 60 * 1000; // ساعتان
 const CLOCK_SKEW = 5 * 60 * 1000;
@@ -42,18 +43,18 @@ export function qrGenerateView(el, nav) {
   return guard(el, nav, () => {
     const card = getCard();
     if (!card) {
-      el.innerHTML = `<h1>🔳 باركود للإسعاف</h1><p>أنشئ بطاقتك الصحية أولاً.</p><a class="btn btn-primary" href="#/card/edit">إنشاء بطاقتي</a>`;
+      el.innerHTML = `${pageHead('qr-code', 'red', 'باركود للإسعاف')}<p>أنشئ بطاقتك الصحية أولاً.</p><a class="btn btn-primary" href="#/card/edit">إنشاء بطاقتي</a>`;
       return;
     }
     const render = async () => {
       const code = await encodeCard(card, 'emergency');
       const now = Date.now();
       el.innerHTML = `
-        <h1>🔳 باركود للإسعاف</h1>
+        ${pageHead('qr-code', 'red', 'باركود للإسعاف')}
         ${WARNING}
         <div class="qr-wrap" aria-label="باركود بطاقة الإسعاف">${qrSvg(code)}</div>
         <p style="text-align:center">أُنشئ الساعة <strong>${esc(formatTime(now))}</strong> وصالح حتى <strong>${esc(formatTime(now + TTL))}</strong></p>
-        <p class="muted small" style="text-align:center">يقرؤه المسعف من تطبيق إسعافي ← قراءة باركود.</p>
+        <p class="muted small" style="text-align:center">يقرؤه المسعف من تطبيق إسعافي، من «قراءة باركود».</p>
         <div class="stack">
           <button class="btn" id="again">إنشاء باركود جديد</button>
           <details>
@@ -65,7 +66,7 @@ export function qrGenerateView(el, nav) {
       $('#again', el).onclick = render;
       $('#cp', el).onclick = async (e) => {
         const ok = await copyText(code, $('textarea.code', el));
-        e.target.textContent = ok ? 'تم النسخ ✓' : 'انسخ النص يدوياً';
+        e.target.textContent = ok ? 'تم النسخ' : 'انسخ النص يدوياً';
       };
     };
     render();
@@ -81,14 +82,14 @@ export function scanView(el, nav) {
   let lastScan = 0;
 
   el.innerHTML = `
-    <h1>📷 قراءة باركود</h1>
+    ${pageHead('scan-qr-code', 'slate', 'قراءة باركود')}
     <p class="muted">وجّه الكاميرا نحو باركود الإسعاف من جوال الطالب.</p>
     <div id="camArea">
       <div class="scanner" id="scanner" hidden>
         <video id="video" playsinline muted autoplay></video>
         <div class="frame"></div>
       </div>
-      <button class="btn btn-primary" id="startCam">تشغيل الكاميرا</button>
+      <button class="btn btn-primary" id="startCam">${icon('camera')} تشغيل الكاميرا</button>
     </div>
     <p id="camMsg" class="notice warn" hidden></p>
     <div id="result"></div>
@@ -210,7 +211,7 @@ export function tempView(el) {
   }
 
   el.innerHTML = `
-    <h1>بطاقة إسعاف مؤقتة</h1>
+    ${pageHead('hourglass', 'red', 'بطاقة إسعاف مؤقتة')}
     <p class="muted small">قُرئت من باركود. تُحذف تلقائياً بعد:</p>
     <p class="countdown" id="cd" aria-live="off">${formatCountdown(t.expiresAt - Date.now())}</p>
     ${bigCardHtml(t.card)}

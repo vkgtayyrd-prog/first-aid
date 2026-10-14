@@ -41,6 +41,12 @@ node tools/build-roster.mjs
 - **حذف طالب:** احذفه من الفورم ثم أعد البناء والرفع. النسخ المشفّرة القديمة تبقى في سجل Git.
 - **إذا تسرّب الكود:** نفّذ `node tools/build-roster.mjs --new-code` وأعطِ الإداريين الكود الجديد. النسخ القديمة في سجل Git تبقى تنفتح بالكود القديم.
 
+## المصادر والرخص
+
+- الأيقونات: [Lucide](https://lucide.dev) (ISC) و [Healthicons](https://healthicons.org) (MIT). الرخص في `vendor/`.
+- الخط: IBM Plex Sans Arabic (SIL OFL)، في `fonts/OFL.txt`.
+- صورة ضغطات الصدر المتحركة `media/cpr-compressions.gif`: Bangkok Hospital Phuket، تحرير Mikael Häggström، من [ويكيميديا كومنز](https://commons.wikimedia.org/wiki/File:Chest_compressions_(cropped).gif)، رخصة CC BY 3.0. الرخصة تشترط ذكر المصدر، وهو مكتوب تحت الصورة في التطبيق.
+
 ## التشغيل محلياً
 
 ```bash

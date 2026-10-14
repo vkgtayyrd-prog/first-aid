@@ -2,6 +2,7 @@
 // يجب أن تطابق إعدادات التشفير هنا ما في tools/build-roster.mjs.
 import { esc, $, normalizeArabic, formatDateTime } from './util.js';
 import { bigCardHtml, condLabels, sanitizeCard, encodeCard, qrSvg } from './card.js';
+import { icon, pageHead } from './icons.js';
 
 let roster = null; // في الذاكرة فقط، ولا يُحفظ الكود ولا البيانات في الجهاز
 let query = '';
@@ -38,7 +39,7 @@ async function decryptRoster(code) {
 
 function lockedView(el, rerender) {
   el.innerHTML = `
-    <h1>🗂️ سجل الطلاب</h1>
+    ${pageHead('folder-lock', 'blue', 'سجل الطلاب')}
     <p>للإداريين والممرض/ة فقط. أدخل كود السجل.</p>
     <form id="f" autocomplete="off">
       <div class="field">
@@ -76,14 +77,14 @@ function lockedView(el, rerender) {
 
 function listView(el, rerender) {
   el.innerHTML = `
-    <h1>🗂️ سجل الطلاب</h1>
+    ${pageHead('folder-lock', 'blue', 'سجل الطلاب')}
     <p class="muted small">${roster.students.length} طالب · آخر تحديث ${esc(formatDateTime(roster.builtAt))}</p>
     <div class="search">
       <input id="q" type="search" aria-label="بحث بالاسم أو الصف" placeholder="ابحث بالاسم أو الصف" value="${esc(query)}">
-      <span class="icon" aria-hidden="true">🔍</span>
+      <span class="icon">${icon('search')}</span>
     </div>
     <ul class="results" id="list"></ul>
-    <button class="btn" id="lock" style="margin-top:12px">🔒 قفل السجل</button>`;
+    <button class="btn" id="lock" style="margin-top:12px">${icon('lock')} قفل السجل</button>`;
 
   const renderList = () => {
     const nq = normalizeArabic(query);
@@ -112,12 +113,12 @@ function listView(el, rerender) {
 function detailView(el, student, rerender) {
   window.scrollTo(0, 0);
   el.innerHTML = `
-    <button class="btn" id="back">→ القائمة</button>
+    <button class="btn" id="back">${icon('arrow-right')} القائمة</button>
     <h1 style="margin-top:16px">بطاقة طالب</h1>
     ${student.k ? `<p class="muted">الصف: <strong>${esc(student.k)}</strong></p>` : ''}
     ${bigCardHtml(student.card)}
     <div class="stack" style="margin-top:14px">
-      <button class="btn btn-primary" id="qr">🔳 إظهار باركود للطالب</button>
+      <button class="btn btn-primary" id="qr">${icon('qr-code')} إظهار باركود للطالب</button>
     </div>
     <div id="qrOut"></div>`;
   $('#back', el).onclick = rerender;
@@ -125,7 +126,7 @@ function detailView(el, student, rerender) {
     const code = await encodeCard(student.card, 'backup');
     $('#qrOut', el).innerHTML = `
       <div class="qr-wrap">${qrSvg(code)}</div>
-      <p class="notice small">يفتح الطالب تطبيق إسعافي في جواله ← قراءة باركود، ويصوّر هذا الباركود فتُحفظ بطاقته في جواله.</p>`;
+      <p class="notice small">يفتح الطالب تطبيق إسعافي في جواله، ويختار «قراءة باركود»، ويصوّر هذا الباركود فتُحفظ بطاقته في جواله.</p>`;
   };
 }
 

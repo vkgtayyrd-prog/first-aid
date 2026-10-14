@@ -15,16 +15,25 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1.4.0">
+  <script>
+    // يطبّق المظهر المحفوظ (فاتح/داكن) قبل رسم الصفحة حتى لا يومض.
+    try { var t = localStorage.getItem('fa.theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
 </head>
 <body>
   <header class="topbar">
+    <div class="brandbar">
+      <span class="brand-school"><span>التوجيه الصحي</span> <span>لثانوية كعب بن مالك</span></span>
+      <a class="brand-name" href="#/"><span class="brand-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg></span>إسعافي</a>
+      <button type="button" class="theme-btn" id="themeBtn" aria-label="المظهر: تلقائي"></button>
+    </div>
     <a class="call-btn" href="tel:997" aria-label="اتصال بالإسعاف 997">
-      <span aria-hidden="true">📞</span> اتصال بالإسعاف 997
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg> اتصال بالإسعاف 997
     </a>
     <nav class="nav" aria-label="التنقل">
-      <button type="button" class="nav-btn" id="backBtn" aria-label="رجوع">→ رجوع</button>
-      <a class="nav-btn" href="#/" aria-label="الرئيسية">🏠 الرئيسية</a>
+      <button type="button" class="nav-btn" id="backBtn" aria-label="رجوع"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> رجوع</button>
+      <a class="nav-btn" href="#/" aria-label="الرئيسية"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> الرئيسية</a>
     </nav>
   </header>
 
@@ -33,7 +42,7 @@
   </main>
 
   <footer class="disclaimer" role="note">
-    إرشادات أولية ولا تغني عن الإسعاف أو الطبيب
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> إرشادات أولية ولا تغني عن الإسعاف أو الطبيب
   </footer>
 
   <noscript><p class="loading">يحتاج التطبيق إلى تفعيل JavaScript.</p></noscript>

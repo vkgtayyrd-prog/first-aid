@@ -9,8 +9,10 @@ import {
 } from './card.js';
 import { qrGenerateView, scanView, tempView, purgeExpiredTemp } from './qr.js';
 import { adminView, lockAdmin } from './admin.js';
+import { icon, badge, row, pageHead } from './icons.js';
+import { ILLUSTRATIONS } from './illustrations.js';
 
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.3.0';
 const app = document.getElementById('app');
 let data = null;
 let index = null;
@@ -30,8 +32,9 @@ function resultsHtml(results) {
   }
   return `<ul class="results">${results.map(({ id }) => {
     const c = data.byId[id];
-    return `<li><a class="result" href="#/c/${esc(c.id)}"><span class="emoji" aria-hidden="true">${c.icon}</span>
-      <span><strong>${esc(c.title)}</strong><span class="sub">${esc(c.summary)}</span></span></a></li>`;
+    return `<li><a class="result" href="#/c/${esc(c.id)}">${badge(c.icon, c.tone, 'sm')}
+      <span><strong>${esc(c.title)}</strong><span class="sub">${esc(c.summary)}</span></span>
+      <span class="chev">${icon('chevron-left')}</span></a></li>`;
   }).join('')}</ul>`;
 }
 
@@ -40,29 +43,25 @@ function homeView(el) {
   el.innerHTML = `
     <form class="search" role="search" onsubmit="return false">
       <input id="q" type="search" aria-label="بحث في الحالات" enterkeyhint="search" autocomplete="off" placeholder="اكتب ما حدث… مثلاً: طاح، ينزف، ما يتنفس" value="${esc(lastQuery)}">
-      <span class="icon" aria-hidden="true">🔍</span>
+      <span class="icon">${icon('search')}</span>
     </form>
     <div id="results"></div>
     <div id="homeBody">
-      ${temp ? `<a class="feature" href="#/temp" style="border-color:var(--red)"><span class="emoji">⏳</span>
-        <span><strong>بطاقة إسعاف مؤقتة مفتوحة</strong><span class="sub">تُحذف تلقائياً بعد ساعتين من إنشائها</span></span></a>` : ''}
-      <a class="feature triage" href="#/triage/start"><span class="emoji" aria-hidden="true">🧭</span>
-        <span><strong>تقييم سريع</strong><span class="sub">لا تعرف ما الحالة؟ أجب عن أسئلة نعم/لا</span></span></a>
-      <h2>الحالات</h2>
+      ${temp ? row('#/temp', 'hourglass', 'red', 'بطاقة إسعاف مؤقتة مفتوحة', 'تُحذف تلقائياً بعد ساعتين من إنشائها', 'alert') : ''}
+      ${row('#/triage/start', 'compass', 'blue', 'تقييم سريع', 'لا تعرف ما الحالة؟ أجب عن أسئلة نعم/لا', 'triage')}
+      <p class="section-title">الحالات</p>
       <div class="grid">
         ${data.conditions.filter((c) => c.inGrid).map((c) => `
-          <a class="tile" href="#/c/${esc(c.id)}"><span class="emoji" aria-hidden="true">${c.icon}</span>${esc(c.title)}</a>
+          <a class="tile" href="#/c/${esc(c.id)}">${badge(c.icon, c.tone)}${esc(c.title)}</a>
         `).join('')}
       </div>
-      <a class="feature" href="#/c/cpr" style="margin-top:10px"><span class="emoji" aria-hidden="true">❤️</span>
-        <span><strong>ضغطات الصدر (الإنعاش)</strong><span class="sub">لا يستجيب ولا يتنفس</span></span></a>
-      <h2>بطاقتي</h2>
-      <a class="feature" href="#/card"><span class="emoji" aria-hidden="true">🪪</span>
-        <span><strong>بطاقتي الصحية</strong><span class="sub">حالتك ودواؤك ورقم ولي أمرك، محفوظة في جوالك فقط</span></span></a>
-      <a class="feature" href="#/scan"><span class="emoji" aria-hidden="true">📷</span>
-        <span><strong>قراءة باركود إسعاف</strong><span class="sub">لعرض بطاقة طالب لمدة ساعتين</span></span></a>
-      <a class="feature" href="#/settings"><span class="emoji" aria-hidden="true">⚙️</span>
-        <span><strong>الإعدادات والخصوصية</strong><span class="sub">نموذج موافقة ولي الأمر، حذف البيانات، التثبيت</span></span></a>
+      <div style="margin-top:10px">
+        ${row('#/c/cpr', 'med-cpr', 'red', 'ضغطات الصدر (الإنعاش)', 'لا يستجيب ولا يتنفس', 'alert')}
+      </div>
+      <p class="section-title">بطاقتي</p>
+      ${row('#/card', 'id-card', 'green', 'بطاقتي الصحية', 'حالتك ودواؤك ورقم ولي أمرك، محفوظة في جوالك فقط')}
+      ${row('#/scan', 'scan-qr-code', 'slate', 'قراءة باركود إسعاف', 'لعرض بطاقة طالب لمدة ساعتين')}
+      ${row('#/settings', 'settings', 'slate', 'الإعدادات والخصوصية', 'نموذج موافقة ولي الأمر، حذف البيانات، التثبيت')}
     </div>`;
 
   const input = $('#q', el);
@@ -88,10 +87,10 @@ function metronome(el) {
   const wrap = document.createElement('div');
   wrap.className = 'box metronome';
   wrap.innerHTML = `
-    <h2>إيقاع الضغطات</h2>
+    <h2>${icon('heart-pulse')} إيقاع الضغطات</h2>
     <p class="small muted">اضغط مع كل نبضة (110 في الدقيقة).</p>
     <div class="beat" id="beat" aria-hidden="true"></div>
-    <button class="btn btn-danger" id="metro">▶ تشغيل الإيقاع</button>`;
+    <button class="btn btn-danger" id="metro">تشغيل الإيقاع</button>`;
   el.querySelector('#metroSlot').appendChild(wrap);
 
   let timer = 0;
@@ -116,7 +115,7 @@ function metronome(el) {
   const stop = () => {
     clearInterval(timer);
     timer = 0;
-    btn.textContent = '▶ تشغيل الإيقاع';
+    btn.textContent = 'تشغيل الإيقاع';
   };
   btn.onclick = () => {
     if (timer) return stop();
@@ -126,7 +125,7 @@ function metronome(el) {
     } catch { ctx = null; }
     pulse();
     timer = setInterval(pulse, 60000 / 110);
-    btn.textContent = '■ إيقاف الإيقاع';
+    btn.textContent = 'إيقاف الإيقاع';
   };
   return () => {
     stop();
@@ -142,25 +141,32 @@ function conditionView(el, params) {
   }
   const tnode = params.node ? data.triage.nodes[params.node] : null;
   const urgent = tnode?.urgent
-    ? `<div class="urgent" role="alert">📞 ${esc(tnode.note || 'اتصل بالإسعاف 997 الآن، ثم اتبع الخطوات.')}</div>`
+    ? `<div class="urgent" role="alert">${icon('phone-call')}<span>${esc(tnode.note || 'اتصل بالإسعاف 997 الآن، ثم اتبع الخطوات.')}</span></div>`
     : '';
 
   el.innerHTML = `
-    ${c.reviewed ? '' : '<span class="draft">⚠️ مسودة تحتاج مراجعة ممرض/ة</span>'}
+    ${c.reviewed ? '' : `<span class="draft">${icon('triangle-alert')} مسودة تحتاج مراجعة ممرض/ة</span>`}
     ${urgent}
-    <div class="cond-head"><span class="emoji" aria-hidden="true">${c.icon}</span><h1>${esc(c.title)}</h1></div>
-    <p class="muted" style="margin-top:8px">${esc(c.summary)}</p>
-    ${c.signs?.length ? `<section class="box signs"><h2>العلامات</h2>${list(c.signs)}</section>` : ''}
-    <section class="box do"><h2>✅ افعل</h2>${list(c.steps, true)}</section>
+    <div class="cond-head">${badge(c.icon, c.tone, 'lg')}<h1>${esc(c.title)}</h1></div>
+    <p class="muted" style="margin-top:10px">${esc(c.summary)}</p>
+    ${c.signs?.length ? `<section class="box signs"><h2>${icon('stethoscope')} العلامات</h2>${list(c.signs)}</section>` : ''}
+    ${c.media ? `<figure class="media">
+      ${c.media.anim ? `<span class="ill">${ILLUSTRATIONS[c.media.anim] || ''}</span>` : c.media.video
+    ? `<video src="${esc(c.media.src)}" width="${c.media.w}" height="${c.media.h}" autoplay muted loop playsinline aria-label="${esc(c.media.alt)}"></video>`
+    : `<img src="${esc(c.media.src)}" alt="${esc(c.media.alt)}" width="${c.media.w}" height="${c.media.h}" loading="lazy">`}
+      <figcaption>${esc(c.media.caption)}
+        ${c.media.credit ? `<a class="credit" href="${esc(c.media.creditUrl)}" target="_blank" rel="noopener">${esc(c.media.credit)}</a>` : ''}</figcaption>
+    </figure>` : ''}
+    <section class="box do"><h2>${icon('circle-check')} افعل</h2>${list(c.steps, true)}</section>
     <div id="metroSlot"></div>
-    ${c.dont?.length ? `<section class="box dont"><h2>⛔ لا تفعل</h2>${list(c.dont)}</section>` : ''}
-    ${c.call?.length ? `<section class="box call"><h2>📞 اتصل بالإسعاف 997 فوراً إذا</h2>${list(c.call)}
-      <a class="btn btn-danger" href="tel:997" style="margin-top:12px">اتصل بالإسعاف 997</a></section>` : ''}
-    ${c.after?.length ? `<section class="box"><h2>بعد ذلك</h2>${list(c.after)}</section>` : ''}
-    ${c.related?.length ? `<h2>حالات قريبة</h2><div class="btn-row">${c.related
+    ${c.dont?.length ? `<section class="box dont"><h2>${icon('ban')} لا تفعل</h2>${list(c.dont)}</section>` : ''}
+    ${c.call?.length ? `<section class="box call"><h2>${icon('phone-call')} اتصل بالإسعاف 997 فوراً إذا</h2>${list(c.call)}
+      <a class="btn btn-danger" href="tel:997" style="margin-top:12px">${icon('phone')} اتصل بالإسعاف 997</a></section>` : ''}
+    ${c.after?.length ? `<section class="box"><h2>${icon('clipboard-check')} بعد ذلك</h2>${list(c.after)}</section>` : ''}
+    ${c.related?.length ? `<p class="section-title">حالات قريبة</p>${c.related
     .map((r) => data.byId[r]).filter(Boolean)
-    .map((r) => `<a class="btn" href="#/c/${esc(r.id)}">${r.icon} ${esc(r.title)}</a>`).join('')}</div>` : ''}
-    ${tnode ? '<a class="btn btn-ghost" href="#/triage" style="margin-top:16px">→ رجوع للتقييم السريع</a>' : ''}`;
+    .map((r) => row(`#/c/${esc(r.id)}`, r.icon, r.tone, esc(r.title), esc(r.summary))).join('')}` : ''}
+    ${tnode ? `<a class="btn btn-ghost" href="#/triage" style="margin-top:16px">${icon('arrow-right')} رجوع للتقييم السريع</a>` : ''}`;
 
   if (c.id === 'cpr') return metronome(el);
   return null;
@@ -189,10 +195,10 @@ const CONSENT = `نموذج موافقة ولي الأمر على استخدام
 
 function settingsView(el, nav) {
   el.innerHTML = `
-    <h1>⚙️ الإعدادات والخصوصية</h1>
+    ${pageHead('settings', 'slate', 'الإعدادات والخصوصية')}
 
     <section class="box">
-      <h2>🔒 الخصوصية</h2>
+      <h2>${icon('shield-check')} الخصوصية</h2>
       <ul>
         <li>لا حسابات ولا تسجيل دخول.</li>
         <li>البطاقة الصحية محفوظة في هذا الجوال فقط ولا تُرسل لأي مكان.</li>
@@ -202,25 +208,24 @@ function settingsView(el, nav) {
       </ul>
     </section>
 
-    <a class="feature" href="#/admin"><span class="emoji" aria-hidden="true">🗂️</span>
-      <span><strong>للإداريين</strong><span class="sub">سجل بطاقات الطلاب (يحتاج كود)</span></span></a>
+    ${row('#/admin', 'folder-lock', 'blue', 'للإداريين', 'سجل بطاقات الطلاب (يحتاج كود)')}
 
     <section class="box">
-      <h2>📝 نموذج موافقة ولي الأمر</h2>
+      <h2>${icon('clipboard-signature')} نموذج موافقة ولي الأمر</h2>
       <p class="small muted">انسخه واطبعه أو أرسله لولي الأمر.</p>
       <textarea id="consent" class="consent" readonly style="width:100%;min-height:260px;direction:rtl;text-align:right">${esc(CONSENT)}</textarea>
       <button class="btn" id="copyConsent" style="margin-top:8px">نسخ النموذج</button>
     </section>
 
     <section class="box">
-      <h2>📲 تثبيت التطبيق على الشاشة الرئيسية</h2>
-      <p><strong>آيفون (Safari):</strong> زر المشاركة ⬆️ ← "إضافة إلى الشاشة الرئيسية".</p>
-      <p><strong>سامسونج وأندرويد (Chrome أو Samsung Internet):</strong> القائمة ⋮ أو ≡ ← "إضافة إلى الشاشة الرئيسية" أو "تثبيت التطبيق".</p>
+      <h2>${icon('smartphone')} تثبيت التطبيق على الشاشة الرئيسية</h2>
+      <p><strong>آيفون (Safari):</strong> زر المشاركة، ثم "إضافة إلى الشاشة الرئيسية".</p>
+      <p><strong>سامسونج وأندرويد (Chrome أو Samsung Internet):</strong> القائمة ⋮ أو ≡، ثم "إضافة إلى الشاشة الرئيسية" أو "تثبيت التطبيق".</p>
       <p class="small muted" style="margin:0">بعد أول فتح يعمل التطبيق بدون إنترنت.</p>
     </section>
 
     <section class="box dont">
-      <h2>🗑️ احذف كل بياناتي</h2>
+      <h2>${icon('trash-2')} احذف كل بياناتي</h2>
       <p>يحذف البطاقة الصحية ورمز PIN وأي بطاقة مؤقتة من هذا الجوال. لا يمكن التراجع.</p>
       <button class="btn btn-danger" id="del">احذف كل بياناتي</button>
       <div id="delConfirm"></div>
@@ -230,7 +235,7 @@ function settingsView(el, nav) {
 
   $('#copyConsent', el).onclick = async (e) => {
     const ok = await copyText(CONSENT, $('#consent', el));
-    e.target.textContent = ok ? 'تم النسخ ✓' : 'انسخ النص يدوياً';
+    e.target.textContent = ok ? 'تم النسخ' : 'انسخ النص يدوياً';
   };
 
   $('#del', el).onclick = () => {
@@ -292,6 +297,40 @@ function render() {
   cleanup = view(app, nav) || null;
   if (path !== '') app.focus({ preventScroll: true });
 }
+
+// ---------- المظهر: تلقائي ← داكن ← فاتح ----------
+
+const THEMES = {
+  auto: { icon: 'sun-moon', label: 'المظهر: تلقائي حسب الجوال' },
+  dark: { icon: 'moon', label: 'المظهر: الوضع الليلي' },
+  light: { icon: 'sun', label: 'المظهر: الوضع الفاتح' },
+};
+
+function currentTheme() {
+  return document.documentElement.dataset.theme || 'auto';
+}
+
+function applyTheme(theme) {
+  if (theme === 'auto') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = theme;
+  try {
+    if (theme === 'auto') localStorage.removeItem('fa.theme');
+    else localStorage.setItem('fa.theme', theme);
+  } catch { /* التصفح الخاص */ }
+  const btn = document.getElementById('themeBtn');
+  btn.innerHTML = icon(THEMES[theme].icon);
+  btn.setAttribute('aria-label', `${THEMES[theme].label}. اضغط للتغيير`);
+  btn.title = THEMES[theme].label;
+  const dark = theme === 'dark' || (theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#171a20' : '#d32f2f');
+}
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const order = ['auto', 'dark', 'light'];
+  applyTheme(order[(order.indexOf(currentTheme()) + 1) % order.length]);
+});
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => applyTheme(currentTheme()));
+applyTheme(currentTheme());
 
 document.getElementById('backBtn').addEventListener('click', () => {
   if (history.length > 1) history.back();

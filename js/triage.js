@@ -1,5 +1,6 @@
 // التقييم السريع: أسئلة نعم/لا من شجرة ثابتة في data/triage.json.
 import { esc, $ } from './util.js';
+import { icon, pageHead } from './icons.js';
 
 let path = []; // العقد التي مرّ بها المستخدم
 
@@ -34,14 +35,14 @@ export function triageView(el, nav, data) {
 
     const controls = `
       <div class="btn-row" style="margin-top:20px">
-        ${path.length > 1 ? '<button class="btn" id="prev">→ السؤال السابق</button>' : ''}
+        ${path.length > 1 ? `<button class="btn" id="prev">${icon('arrow-right')} السؤال السابق</button>` : ''}
         <button class="btn btn-ghost" id="restart">ابدأ من جديد</button>
       </div>`;
 
     if (node.type === 'q') {
       const qNum = path.filter((p) => nodes[p]?.type === 'q').length;
       el.innerHTML = `
-        <h1>🧭 تقييم سريع</h1>
+        ${pageHead('compass', 'blue', 'تقييم سريع')}
         <p class="muted small">أسئلة لمساعدتك تختار الإرشادات المناسبة، وليست بديلاً عن الطبيب.</p>
         <p class="progress">سؤال ${qNum}</p>
         <p class="question">${esc(node.q)}</p>
@@ -56,18 +57,18 @@ export function triageView(el, nav, data) {
     } else if (node.type === 'danger') {
       el.innerHTML = `
         <section class="danger-screen" role="alert">
-          <p style="font-size:56px;margin:0">⚠️</p>
+          <span class="big-ico">${icon('triangle-alert')}</span>
           <h1>${esc(node.title)}</h1>
           <p>${esc(node.text)}</p>
           <div class="stack">
-            <a class="btn btn-white" href="tel:997">📞 اتصل بالإسعاف 997</a>
-            ${node.next ? `<a class="btn btn-white" href="#/c/${esc(node.next)}">❤️ خطوات ضغطات الصدر</a>` : ''}
-            ${path.length > 1 ? '<button class="btn btn-outline" id="prev">→ السؤال السابق</button>' : ''}
+            <a class="btn btn-white" href="tel:997">${icon('phone')} اتصل بالإسعاف 997</a>
+            ${node.next ? `<a class="btn btn-white" href="#/c/${esc(node.next)}">${icon('heart-pulse')} خطوات ضغطات الصدر</a>` : ''}
+            ${path.length > 1 ? `<button class="btn btn-outline" id="prev">${icon('arrow-right')} السؤال السابق</button>` : ''}
           </div>
         </section>`;
     } else {
       el.innerHTML = `
-        <h1>🧭 تقييم سريع</h1>
+        ${pageHead('compass', 'blue', 'تقييم سريع')}
         <p class="notice">${esc(node.text)}</p>
         <div class="stack">
           <a class="btn btn-primary" href="#/">البحث أو اختيار حالة</a>
