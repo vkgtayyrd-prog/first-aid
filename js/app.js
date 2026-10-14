@@ -8,8 +8,9 @@ import {
   deleteAllData, lock,
 } from './card.js';
 import { qrGenerateView, scanView, tempView, purgeExpiredTemp } from './qr.js';
+import { adminView, lockAdmin } from './admin.js';
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const app = document.getElementById('app');
 let data = null;
 let index = null;
@@ -195,10 +196,14 @@ function settingsView(el, nav) {
       <ul>
         <li>لا حسابات ولا تسجيل دخول.</li>
         <li>البطاقة الصحية محفوظة في هذا الجوال فقط ولا تُرسل لأي مكان.</li>
-        <li>لا إعلانات ولا أدوات تتبع، ولا يتصل التطبيق بالإنترنت بعد تثبيته.</li>
+        <li>لا إعلانات ولا أدوات تتبع، ولا يتصل التطبيق بالإنترنت بعد تثبيته إلا لجلب التحديثات.</li>
         <li>لا تُفعَّل البطاقات في المدرسة إلا بموافقة ولي الأمر وعلم الإدارة والممرض/ة.</li>
+        <li>يحتوي التطبيق سجلاً مشفّراً لبطاقات الطلاب الذين وافق أولياء أمورهم، ولا يفتحه إلا الإداريون والممرض/ة بكود خاص.</li>
       </ul>
     </section>
+
+    <a class="feature" href="#/admin"><span class="emoji" aria-hidden="true">🗂️</span>
+      <span><strong>للإداريين</strong><span class="sub">سجل بطاقات الطلاب (يحتاج كود)</span></span></a>
 
     <section class="box">
       <h2>📝 نموذج موافقة ولي الأمر</h2>
@@ -262,6 +267,7 @@ const routes = [
   [/^scan$/, () => scanView],
   [/^temp$/, () => tempView],
   [/^settings$/, () => settingsView],
+  [/^admin$/, () => adminView],
 ];
 
 function currentPath() {
@@ -296,7 +302,8 @@ document.getElementById('backBtn').addEventListener('click', () => {
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
     lock();
-  } else if (/^(card|qr)/.test(currentPath())) {
+    lockAdmin();
+  } else if (/^(card|qr|admin)/.test(currentPath())) {
     render();
   } else if (currentPath() === 'temp') {
     render();

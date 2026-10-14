@@ -1,6 +1,6 @@
 // Service Worker: يحفظ كل ملفات التطبيق عند التثبيت ويخدمها من الذاكرة (cache-first).
 // عند تعديل أي ملف (مثل المحتوى بعد مراجعة الممرض/ة) غيّر رقم VERSION ليحصل الطلاب على التحديث.
-const VERSION = 'isaafi-v1.0.0';
+const VERSION = 'isaafi-v1.1.0';
 
 const FILES = [
   './',
@@ -14,11 +14,13 @@ const FILES = [
   './js/triage.js',
   './js/card.js',
   './js/qr.js',
+  './js/admin.js',
   './vendor/qrcode.js',
   './vendor/jsQR.js',
   './data/conditions.json',
   './data/synonyms.json',
   './data/triage.json',
+  './data/roster.enc.json',
   './icons/icon.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
