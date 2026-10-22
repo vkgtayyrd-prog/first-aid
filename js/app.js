@@ -12,7 +12,7 @@ import { adminView, lockAdmin } from './admin.js';
 import { icon, badge, row, pageHead } from './icons.js';
 import { ILLUSTRATIONS } from './illustrations.js';
 
-const APP_VERSION = '1.3.1';
+const APP_VERSION = '1.3.2';
 const app = document.getElementById('app');
 let data = null;
 let index = null;
@@ -62,6 +62,7 @@ function homeView(el) {
       ${row('#/card', 'id-card', 'green', 'بطاقتي الصحية', 'حالتك ودواؤك ورقم ولي أمرك، محفوظة في جوالك فقط')}
       ${row('#/scan', 'scan-qr-code', 'slate', 'قراءة باركود إسعاف', 'لعرض بطاقة طالب لمدة ساعتين')}
       ${row('#/settings', 'settings', 'slate', 'الإعدادات والخصوصية', 'نموذج موافقة ولي الأمر، حذف البيانات، التثبيت')}
+      ${row('#/about', 'info', 'blue', 'لمحة عن التطبيق', 'من صنع التطبيق، والإشراف، والمصادر')}
     </div>`;
 
   const input = $('#q', el);
@@ -193,6 +194,56 @@ const CONSENT = `نموذج موافقة ولي الأمر على استخدام
 اطلعت إدارة المدرسة: ....................
 اطلع الممرض/ة: ....................`;
 
+// ---------- لمحة عن التطبيق ----------
+
+function aboutView(el) {
+  el.innerHTML = `
+    <section class="about-hero">
+      <span class="about-logo">${icon('heart-pulse')}</span>
+      <h1>إسعافي</h1>
+      <p class="muted">دليل الإسعافات الأولية لطلاب ثانوية كعب بن مالك</p>
+    </section>
+
+    <section class="box about-people">
+      <div class="person">
+        ${badge('user-round', 'green')}
+        <span><span class="role">فكرة التطبيق وتصميمه وصنعه</span><strong>سفيان مصطفى برناوي</strong></span>
+      </div>
+      <div class="person">
+        ${badge('stethoscope', 'red')}
+        <span><span class="role">المشرف الصحي</span><strong>عماد مصطفى مقلية</strong></span>
+      </div>
+      <div class="person">
+        ${badge('school', 'blue')}
+        <span><span class="role">المدرسة</span><strong>ثانوية كعب بن مالك</strong><span class="sub">التوجيه الصحي</span></span>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>${icon('info')} عن التطبيق</h2>
+      <p>تطبيق يساعد الطلاب على التصرف الصحيح في أول دقائق الحالة الطارئة: خطوات واضحة لكل حالة، وتقييم سريع، وبطاقة صحية للطالب.</p>
+      <ul>
+        <li>يعمل بدون إنترنت بعد أول فتح.</li>
+        <li>لا حسابات ولا إعلانات، والبطاقة الصحية محفوظة في جوال الطالب فقط.</li>
+        <li>راجع المشرف الصحي محتوى الحالات.</li>
+      </ul>
+      <p class="small muted" style="margin:0">إرشادات أولية ولا تغني عن الإسعاف أو الطبيب. في الحالات الخطيرة اتصل بالإسعاف 997 فوراً.</p>
+    </section>
+
+    <section class="box">
+      <h2>${icon('clipboard-check')} المصادر والشكر</h2>
+      <ul class="small">
+        <li>الأيقونات: Lucide و Healthicons (مفتوحة المصدر).</li>
+        <li>الخط: IBM Plex Sans Arabic.</li>
+        <li>صورة ضغطات الصدر: Bangkok Hospital Phuket عبر ويكيميديا كومنز (CC BY 3.0).</li>
+        <li>مقطع استخدام البخاخ: مراكز السيطرة على الأمراض CDC (ملكية عامة).</li>
+        <li>رسم وضع الإفاقة: ويكيميديا كومنز (ملكية عامة).</li>
+      </ul>
+    </section>
+
+    <p class="muted small" style="text-align:center">إسعافي، الإصدار ${APP_VERSION}</p>`;
+}
+
 function settingsView(el, nav) {
   el.innerHTML = `
     ${pageHead('settings', 'slate', 'الإعدادات والخصوصية')}
@@ -230,6 +281,8 @@ function settingsView(el, nav) {
       <button class="btn btn-danger" id="del">احذف كل بياناتي</button>
       <div id="delConfirm"></div>
     </section>
+
+    ${row('#/about', 'info', 'blue', 'لمحة عن التطبيق', 'من صنع التطبيق، والإشراف، والمصادر')}
 
     <p class="muted small" style="text-align:center">إسعافي، الإصدار ${APP_VERSION}</p>`;
 
@@ -272,6 +325,7 @@ const routes = [
   [/^scan$/, () => scanView],
   [/^temp$/, () => tempView],
   [/^settings$/, () => settingsView],
+  [/^about$/, () => aboutView],
   [/^admin$/, () => adminView],
 ];
 

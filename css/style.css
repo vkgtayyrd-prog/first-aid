@@ -584,6 +584,22 @@ ol.steps li::before {
 .danger-screen .btn-white { background: #fff; color: var(--red-strong); font-size: 22px; min-height: 72px; }
 .danger-screen .btn-outline { background: transparent; color: #fff; }
 
+/* ---------- لمحة عن التطبيق ---------- */
+.about-hero { text-align: center; padding: 12px 0 4px; }
+.about-hero h1 { margin: 10px 0 2px; font-size: 30px; }
+.about-logo {
+  width: 76px; height: 76px; border-radius: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--red); color: #fff; box-shadow: var(--call-shadow);
+}
+.about-logo .ico { width: 42px; height: 42px; }
+.about-people { padding: 6px 16px; }
+.about-people .person { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.about-people .person:last-child { border-bottom: 0; }
+.about-people .role { display: block; font-size: 14px; color: var(--muted); font-weight: 500; }
+.about-people strong { display: block; font-size: 20px; font-weight: 700; line-height: 1.4; }
+.about-people .sub { display: block; font-size: 14px; color: var(--muted); }
+
 /* ---------- صورة متحركة في صفحة الحالة ---------- */
 .media {
   margin: 14px 0;

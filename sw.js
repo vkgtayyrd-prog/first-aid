@@ -1,6 +1,6 @@
 // Service Worker: يحفظ كل ملفات التطبيق عند التثبيت ويخدمها من الذاكرة (cache-first).
 // عند تعديل أي ملف (مثل المحتوى بعد مراجعة الممرض/ة) غيّر رقم VERSION ليحصل الطلاب على التحديث.
-const VERSION = 'isaafi-v1.3.1';
+const VERSION = 'isaafi-v1.3.2';
 
 const FILES = [
   './',
