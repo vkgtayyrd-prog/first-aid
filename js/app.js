@@ -12,7 +12,7 @@ import { adminView, lockAdmin } from './admin.js';
 import { icon, badge, row, pageHead } from './icons.js';
 import { ILLUSTRATIONS } from './illustrations.js';
 
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 const app = document.getElementById('app');
 let data = null;
 let index = null;

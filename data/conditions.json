@@ -48,7 +48,7 @@
       "title": "تشنج",
       "icon": "med-seizure",
       "tone": "violet",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "نوبة صرع أو رجفة قوية في الجسم مع فقدان الوعي.",
       "media": {
@@ -95,7 +95,7 @@
       "title": "ربو",
       "icon": "med-asthma",
       "tone": "blue",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "نوبة ضيق تنفس مع صفير أو كحة.",
       "media": {
@@ -140,7 +140,7 @@
       "title": "هبوط السكر",
       "icon": "med-hypo",
       "tone": "amber",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "انخفاض السكر في الدم، غالباً عند مرضى السكري.",
       "signs": ["رجفة وتعرق", "شحوب", "جوع شديد", "دوخة أو صداع", "تصرف غريب أو عصبية أو تشوش"],
@@ -173,7 +173,7 @@
       "title": "ارتفاع الضغط",
       "icon": "med-bp",
       "tone": "blue",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "صداع شديد أو دوخة عند شخص معروف بارتفاع الضغط.",
       "signs": ["صداع شديد", "دوخة", "زغللة في النظر", "نزيف من الأنف"],
@@ -206,7 +206,7 @@
       "title": "اختناق",
       "icon": "med-choking",
       "tone": "orange",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "انسداد مجرى التنفس بقطعة أكل أو جسم غريب.",
       "media": {
@@ -244,7 +244,7 @@
       "title": "نزيف",
       "icon": "med-bleeding",
       "tone": "red",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "جرح ينزف دماً.",
       "media": {
@@ -283,7 +283,7 @@
       "title": "حروق",
       "icon": "med-burns",
       "tone": "orange",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "حرق من حرارة أو ماء حار أو كهرباء أو مادة كيميائية.",
       "media": {
@@ -323,7 +323,7 @@
       "title": "كسور",
       "icon": "med-fracture",
       "tone": "slate",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "إصابة في العظم أو المفصل بعد سقوط أو ضربة.",
       "media": {
@@ -362,7 +362,7 @@
       "title": "ضربة شمس",
       "icon": "med-heatstroke",
       "tone": "amber",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "ارتفاع خطير في حرارة الجسم بعد التعرض للشمس أو الحر.",
       "signs": ["جسم حار جداً", "صداع ودوخة", "غثيان أو قيء", "تشوش أو تصرف غريب أو كلام غير مفهوم"],
@@ -397,7 +397,7 @@
       "title": "حساسية شديدة",
       "icon": "med-anaphylaxis",
       "tone": "pink",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "تفاعل تحسسي خطير بعد أكل أو لسعة أو دواء.",
       "media": {
@@ -435,7 +435,7 @@
       "title": "رعاف",
       "icon": "med-nosebleed",
       "tone": "red",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": true,
       "summary": "نزيف من الأنف.",
       "media": {
@@ -472,7 +472,7 @@
       "title": "ضغطات الصدر (الإنعاش)",
       "icon": "med-cpr",
       "tone": "red",
-      "reviewed": false,
+      "reviewed": true,
       "inGrid": false,
       "summary": "عندما لا يستجيب الشخص ولا يتنفس بشكل طبيعي.",
       "media": {
